@@ -1,0 +1,74 @@
+body {
+    background-color: rgb(176, 218, 255);
+}
+#logo {
+    height: 10vh;
+    width: 25vh;
+    min-height: 100px;
+    min-width: 250px;
+    border-radius: 5%;
+}
+
+div.navbar {
+    border-radius: 8%;
+    margin-left: 0;
+}
+
+.navbar {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.navbar-custom {
+    background-color: #38b6ff;
+    height: 12vh;
+    min-height: 150px;
+}
+
+.navbar-custom .btn-outline-success {
+    color: #FFF;
+    border-color: #ffde59;
+    height: 5vh;
+    width: 12.5vh;
+    min-width: 105px;
+    min-height: 50px;
+    font-size: 5vh;
+
+}
+
+.navbar-custom .btn-outline-success:hover {
+    background-color: #ffde59;
+    border-color: #FFF;
+}
+
+#log:active {
+    color: #fff;
+    background-color: #ffde59;
+    border-color: #fff;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.form-inline {
+    height: min-content;
+    width: min-content;
+}
+
+#logdiv {
+    display: flex;
+    height: 100px;
+    width: 250px;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+    flex-grow: 4;
+}
+
+/*<!--rgb(254, 255, 134) yellow
+rgb(176, 218, 255) sky blue
+rgb(25, 167, 206) aqua blue
+rgb(20, 108, 148) navy blue-->*/
+
+/* Folder CSS */
