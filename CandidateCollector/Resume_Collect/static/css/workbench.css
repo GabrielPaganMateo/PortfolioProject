@@ -2,11 +2,12 @@ workbench {
     display: flex;
     align-items: start;
     justify-content: flex-end;
+    margin-bottom: 100px;
 }
 
 side {
     position: fixed;
-    left: 12%;
+    left: 15%;
 }
 
 main {

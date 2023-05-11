@@ -21,6 +21,10 @@ side {
     font-size: max(2vh, 12px);
 }
 
+.btn-group-vertical .btn {
+    width: max(13vh, 97px);
+}
+
 .dropdown-menu {
     border-bottom-left-radius: 15%;
 }
@@ -44,7 +48,7 @@ side {
 
 .btn-group-vertical .btn-secondary:hover {
     background-color: #ffe538;
-    border-color: #ffe538;
+    border-color: #fff;
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active {
@@ -61,6 +65,9 @@ side {
 
 #search_input {
     margin-right: 0 !important;
+    width: max(13vh, 97px);
+    height: max(3vh, 36px);
+    font-size: max(1vh, 12px);
 }
 
 .btn-group-vertical .btn-outline-success:hover {
@@ -71,4 +78,23 @@ side {
 .btn-group-vertical .btn-outline-success {
     color: #fff;
     border: 3px solid #ffe538;
+}
+
+.show > .btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: #ffe538;
+    border-color: #fff;
+  }
+
+#btnGroupVerticalDrop1 {
+    border-bottom-right-radius: .3rem;
+    border-bottom-left-radius: .3rem;
+    border-top-left-radius: .3rem;
+    border-top-right-radius: .3rem;
+}
+.search_btn {
+    width: max(13vh, 97px);
+}
+#search_btn {
+    width: max(13vh, 97px);
 }
