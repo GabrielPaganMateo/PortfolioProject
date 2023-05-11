@@ -1,9 +1,7 @@
 main {
-    height: 100vh;
+    min-height: fit-content;
     display: flex;
     justify-content: center;
-    align-items: center;
-    background-color: #949ea3;
 }
 
 #folder {

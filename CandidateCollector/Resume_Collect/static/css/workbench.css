@@ -1,0 +1,16 @@
+workbench {
+    display: flex;
+    align-items: start;
+    justify-content: flex-end;
+}
+
+side {
+    position: fixed;
+    left: 12%;
+}
+
+main {
+    position: relative;
+    right: 15%;
+    z-index: -4;
+}
