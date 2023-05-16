@@ -197,8 +197,13 @@ def list_text(text):
     text_list.extend(combined)
     return text_list
 
+"""The following functions are related to fileDialog and tkinter windows"""
+
 from tkinter import filedialog
+from tkinter import Tk
 from pathlib import Path
+from tkinter import ttk
+import tkinter as tk
 
 def File_extract():
     """
@@ -212,7 +217,7 @@ def File_extract():
         ('docx files', '*.docx'),
         ]
 
-    files = filedialog.askopenfilename(title="Select file(s)", multiple=True, initialdir='/home/holberton/Repo\'s/Resume_Parsing/ExampleResumes', filetypes=filetypes, title="Select files", )
+    files = filedialog.askopenfilename(multiple=True, initialdir='/home/holberton/Repo\'s/Resume_Parsing/ExampleResumes', filetypes=filetypes, title="Select files")
     return files
 
 def Folder_extract():
@@ -223,7 +228,7 @@ def Folder_extract():
         (This dialog require you to be inside of the folder that
         you want to select 'Selection:/DesiredFolder')
     """
-    folder = filedialog.askdirectory(title="Select a folder", mustexist=True, title="Select a folder", initialdir='/home/holberton/Repo\'s/Resume_Parsing')
+    folder = filedialog.askdirectory(mustexist=True, title="Select a folder", initialdir='/home/holberton/Repo\'s/Resume_Parsing')
     if folder == "":
         pass
     else:
@@ -232,3 +237,42 @@ def Folder_extract():
             return files
         except Exception:
             pass
+
+class OpenFileDialog:
+    def __init__(self):
+        self.file_path = None
+    
+    def set_file_path(self, window):
+        self.file_path = File_extract()
+        if not self.file_path or self.file_path == "":
+            pass
+        elif self.file_path is not type(tuple):
+            if self.file_path == ():
+                pass
+            else:
+                window.destroy()
+        elif self.file_path is None:
+            pass
+
+
+class OpenFolderDialog:
+    def __init__(self):
+        self.folder_path = None
+
+    def set_folder_path(self, window):
+        self.folder_path = Folder_extract()
+        if self.folder_path is None:
+            pass
+        elif self.folder_path == "":
+            pass
+        else:
+            window.destroy()
+
+
+class SelectFileButton:
+    def __init__ (self, window, obj):
+        self.button = ttk.Button(window, text="Select files", command=lambda: obj.set_file_path(window)).pack(expand=True)
+
+class SelectFolderButton:
+    def __init__(self, window, obj):
+        self.button = ttk.Button(window, text="Select a folder", command=lambda: obj.set_folder_path(window)).pack(expand=True)
