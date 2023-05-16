@@ -1,14 +1,14 @@
 from django.db import models
 from django.utils import timezone
 import uuid
-from .utils import extract_name, extract_phone, extract_email, extract_education, extract_experience, list_text, extract_text_from_pdf, extract_text_from_docx, OpenFileDialog, OpenFolderDialog, SelectFileButton, SelectFolderButton
+from .utils import AskDirectory, AskOpenFilename,extract_name, extract_phone, extract_email, extract_education, extract_experience, list_text, extract_text_from_pdf, extract_text_from_docx, OpenFileDialog, OpenFolderDialog, SelectFileButton, SelectFolderButton
 from tkinter import Tk, ttk
 import tkinter
 
 # Create your models here.
 class Opening(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.localtime)
     name = models.CharField(max_length=200, null=True)
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Opening(models.Model):
 
 class Candidate(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.localtime)
     name = models.CharField(max_length=200, null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
     email = models.EmailField(max_length=100, null=True, blank=True)
@@ -36,6 +36,65 @@ def createOpening(name):
     opening = Opening.objects.create(name=name)
     opening.save()
     return opening
+
+def createCandidateFromFile(opening_object):
+    files = AskOpenFilename()
+    candidate_list = []
+    for file_path in files:
+        if str(file_path).endswith(".pdf"):
+            text = extract_text_from_pdf(file_path)
+        elif str(file_path).endswith(".docx"):
+            text = extract_text_from_docx(file_path)
+        name = extract_name(text)
+        phone = extract_phone(text)
+        email = extract_email(text)
+        education = extract_education(text)
+        experience = extract_experience(text)
+        text_list = list_text(text)
+
+        candidate = Candidate.objects.create(
+            name=name,
+            phone=phone,
+            email=email,
+            education=education,
+            experience=experience,
+            text_list=text_list,
+            opening=opening_object
+        )
+        candidate.save()
+        candidate_list.append(candidate)
+    return candidate_list
+
+def createCandidateFromFolder(opening_object):
+    folder = AskDirectory()
+    if folder is not None:
+        candidate_list = []
+        for file_path in folder:
+            if str(file_path).endswith(".pdf"):
+                text = extract_text_from_pdf(file_path)
+            elif str(file_path).endswith(".docx"):
+                text = extract_text_from_docx(file_path)
+            name = extract_name(text)
+            phone = extract_phone(text)
+            email = extract_email(text)
+            education = extract_education(text)
+            experience = extract_experience(text)
+            text_list = list_text(text)
+
+            candidate = Candidate.objects.create(
+                name=name,
+                phone=phone,
+                email=email,
+                education=education,
+                experience=experience,
+                text_list=text_list,
+                opening=opening_object
+            )
+            candidate.save()
+            candidate_list.append(candidate)
+        return candidate_list
+
+
 
 def createCandidate(opening_object):
     """Creating Master Window"""

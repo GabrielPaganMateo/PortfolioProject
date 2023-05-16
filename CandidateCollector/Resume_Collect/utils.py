@@ -276,3 +276,60 @@ class SelectFileButton:
 class SelectFolderButton:
     def __init__(self, window, obj):
         self.button = ttk.Button(window, text="Select a folder", command=lambda: obj.set_folder_path(window)).pack(expand=True)
+
+
+def AskOpenFilename():
+    window = Tk()
+    window.withdraw()
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    window_width = 600
+    window_height = 300
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    # Set the window position
+    window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+    """
+    Opens file dialog and permits file selection
+    with subsequent return of the file's path
+        (In order to select multiple files you must hold the Ctrl button)
+    """
+    filetypes = [
+        ('All files', '*.*'),
+        ('pdf files', '*.pdf'),
+        ('docx files', '*.docx'),
+        ]
+
+    files = filedialog.askopenfilename(multiple=True, initialdir='/home/holberton/Repo\'s/Resume_Parsing/ExampleResumes', filetypes=filetypes, title="Select files")
+    window.destroy()
+    return files
+
+def AskDirectory():
+    window = Tk()
+    window.withdraw()
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    window_width = 600
+    window_height = 300
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    # Set the window position
+    window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+    """
+    Opens file dialog and permits folder ('directory')
+    selection with subsequent return of the file paths
+    of every file within the folder
+        (This dialog require you to be inside of the folder that
+        you want to select 'Selection:/DesiredFolder')
+    """
+    folder = filedialog.askdirectory(mustexist=True, title="Select a folder", initialdir='/home/holberton/Repo\'s/Resume_Parsing')
+    if folder == "":
+        pass
+    else:
+        try:
+            files = Path(folder).glob('*')
+            if files != None:
+                return files
+        except Exception:
+            pass
+        window.destroy()
