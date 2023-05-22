@@ -15,8 +15,7 @@ main {
     position: relative;
     right: 15%;
     z-index: 0;
-    overflow:hidden;
-    overflow-x: scroll;
+
     margin-left: 15vh;
     min-width: 300px;
 }

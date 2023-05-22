@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.postgres.fields import ArrayField
 import uuid
-from .utils import AskDirectory, AskOpenFilename,extract_name, extract_phone, extract_email, extract_education, extract_experience, list_text, extract_text_from_pdf, extract_text_from_docx, OpenFileDialog, OpenFolderDialog, SelectFileButton, SelectFolderButton
+from .utils import AskDirectory, AskOpenFilename,extract_name, extract_phone, extract_email, extract_education, extract_experience, list_text, extract_text_from_pdf, extract_text_from_docx, OpenFileDialog, OpenFolderDialog, SelectFileButton, SelectFolderButton, remove_null_bytes
 from tkinter import Tk, ttk
-import tkinter
 
 # Create your models here.
 class Opening(models.Model):
@@ -21,11 +21,11 @@ class Candidate(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(default=timezone.localtime)
     name = models.CharField(max_length=200, null=True, blank=True)
-    phone = models.CharField(max_length=15, null=True, blank=True)
+    phone = models.CharField(max_length=50, null=True, blank=True)
     email = models.EmailField(max_length=100, null=True, blank=True)
     education = models.TextField(null=True, blank=True)
     experience = models.TextField(null=True, blank=True)
-    text_list = models.TextField()
+    text_list = ArrayField(models.CharField(max_length=200), blank=True, null=True)
     opening = models.ForeignKey(Opening, null=True, related_name='candidates', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -45,6 +45,7 @@ def createCandidateFromFile(opening_object):
             text = extract_text_from_pdf(file_path)
         elif str(file_path).endswith(".docx"):
             text = extract_text_from_docx(file_path)
+        text = remove_null_bytes(text)
         name = extract_name(text)
         phone = extract_phone(text)
         email = extract_email(text)
@@ -74,6 +75,7 @@ def createCandidateFromFolder(opening_object):
                 text = extract_text_from_pdf(file_path)
             elif str(file_path).endswith(".docx"):
                 text = extract_text_from_docx(file_path)
+            text = remove_null_bytes(text)
             name = extract_name(text)
             phone = extract_phone(text)
             email = extract_email(text)
@@ -129,6 +131,7 @@ def createCandidate(opening_object):
                 text = extract_text_from_pdf(file_path)
             elif str(file_path).endswith(".docx"):
                 text = extract_text_from_docx(file_path)
+            text = remove_null_bytes(text)
             name = extract_name(text)
             phone = extract_phone(text)
             email = extract_email(text)
@@ -154,6 +157,7 @@ def createCandidate(opening_object):
                 text = extract_text_from_pdf(file_path)
             elif str(file_path).endswith(".docx"):
                 text = extract_text_from_docx(file_path)
+            text = remove_null_bytes(text)
             name = extract_name(text)
             phone = extract_phone(text)
             email = extract_email(text)

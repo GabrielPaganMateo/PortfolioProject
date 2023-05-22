@@ -333,3 +333,9 @@ def AskDirectory():
         except Exception:
             pass
         window.destroy()
+
+
+"""Function to fix error related to null bytes"""
+def remove_null_bytes(input_str):
+    string = str(input_str)
+    return string.replace('\x00', '')
