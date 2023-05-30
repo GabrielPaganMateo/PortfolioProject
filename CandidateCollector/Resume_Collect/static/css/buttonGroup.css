@@ -24,10 +24,13 @@ side {
 
 .btn-group-vertical .btn {
     width: max(13vh, 97px);
+    min-width: fit-content;
+    align-items: center;
 }
 
 .dropdown-menu {
-    border-bottom-left-radius: 15%;
+    width: max(13vh, 170px);
+    text-align: center;
 }
 
 .dropdown-item a {
@@ -48,12 +51,13 @@ side {
   }
 
 .btn-group-vertical .btn-secondary:hover {
+    color: #38b6ff;
     background-color: #ffe538;
     border-color: #fff;
 }
 
 .btn-secondary:not(:disabled):not(.disabled):active {
-    color: #fff;
+    color: #38b6ff;
     background-color: #ffe538;
     border-color: #fff;
     width: max(11vh, 50px) !important;
@@ -61,7 +65,7 @@ side {
 }
 
 .btn-outline-success:not(:disabled):not(.disabled).active, .btn-outline-success:not(:disabled):not(.disabled):active, .show > .btn-outline-success.dropdown-toggle {
-    color: #fff;
+    color: #38b6ff;
     background-color: #ffe538;
     border: 2px solid #fff;
 }
@@ -84,7 +88,7 @@ side {
 }
 
 .show > .btn-secondary.dropdown-toggle {
-    color: #fff;
+    color: #38b6ff;
     background-color: #ffe538;
     border-color: #fff;
   }
@@ -100,4 +104,11 @@ side {
 }
 #search_btn {
     width: max(13vh, 97px);
+}
+
+#OpeningForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: max(2vh, 15px);
 }

@@ -27,6 +27,9 @@ class Candidate(models.Model):
     experience = models.TextField(null=True, blank=True)
     text_list = ArrayField(models.CharField(max_length=200), blank=True, null=True)
     opening = models.ForeignKey(Opening, null=True, related_name='candidates', on_delete=models.CASCADE)
+    resume = models.FileField(upload_to='resumes/')
+
+
 
     def __str__(self):
         return f'{self.__class__.__name__}: {self.name} ({self.id}) created_at: {self.created_at}'
@@ -147,6 +150,7 @@ def createCandidate(opening_object):
                 experience=experience,
                 text_list=text_list,
                 opening=opening_object
+                resume=
             )
             candidate.save()
             candidate_list.append(candidate)
@@ -160,6 +164,7 @@ def createCandidate(opening_object):
             text = remove_null_bytes(text)
             name = extract_name(text)
             phone = extract_phone(text)
+            phone = phone.replace(' ', '')
             email = extract_email(text)
             education = extract_education(text)
             experience = extract_experience(text)

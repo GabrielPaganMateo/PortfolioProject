@@ -1,16 +1,23 @@
+{% load static %}
 <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
-    <button type="button" class="btn btn-secondary">Button</button>
-    <button type="button" class="btn btn-secondary">Button</button>
     <div class="btn-group" role="group">
-      <button id="btnGroupVerticalDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown
-      </button>
-      <div class="dropdown-menu" aria-labelledby="btnGroupVerticalDrop1">
-        <a class="dropdown-item" href="#">Dropdown link</a>
-        <a class="dropdown-item" href="#">Dropdown link</a>
-      </div>
     </div>
-    <button type="button" class="btn btn-secondary">Button</button>
+    <form action="" method="POST" id="OpeningForm">
+      {% csrf_token %}
+      {% for field in openingform %}
+      <div class="field-wrapper">
+          {{ field.errors }}
+          {{ field }}
+      </div>
+  {% endfor %}
+      <input class="btn btn-secondary" type="submit" value="Add Job Opening" style="width: max(13vh, 97px); font-weight:400; font-size: max(2vh, 12px);">
+    </form>
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" id="file" accept=".pdf, .docx" multiple>
+        <input type="submit" value="Upload">
+    </form>
+
     <button type="button" class="btn btn-secondary">Button</button>
     <div class="search_btn">
         <form class="form-inline my-2 my-lg-0">

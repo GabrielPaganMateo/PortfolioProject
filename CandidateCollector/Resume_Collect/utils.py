@@ -56,7 +56,10 @@ def extract_phone(text):
     if match == []:
         return None
     else:
-        return match[0]
+        phone = match[0].replace(" ", "")
+        phone = phone.replace("(", "")
+        phone = phone.replace(")", "-")
+        return phone
     
 def extract_email(text):
     """
@@ -85,35 +88,35 @@ def extract_education(text):
     for token in doc:
         next_token += 1
         if token.text.upper() in doctor_level:
-            return 'Doctoral degree'
+            return 'Doctor'
         elif token.text.upper() in master_level:
-            return 'Master\'s degree'
+            return 'Master\'s'
         elif token.text.upper() in bachelor_level:
-            return 'Bachelor\'s degree'
+            return 'Bachelor\'s'
         elif token.text.upper() in associate_level:
-            return 'Associate\'s degree'
+            return 'Associate\'s'
 
         elif next_token < len(doc):
             compound_word_2 = ("{} {}".format(token.text.upper(), doc[next_token]).upper())
             if compound_word_2 in doctor_level:
-                return 'Doctoral degree'
+                return 'Doctor'
             elif compound_word_2 in master_level:
-                return 'Master\'s degree'
+                return 'Master\'s'
             elif compound_word_2 in bachelor_level:
-                return 'Bachelor\'s degree'
+                return 'Bachelor\'s'
             elif compound_word_2 in associate_level:
-                return 'Associate\'s degree'
+                return 'Associate\'s'
 
         elif (next_token + 1) < len(doc):
             compound_word_3 = ("{} {} {}".format(token.text.upper(), doc[next_token]).upper(), doc[next_token + 1].upper())
             if compound_word_3 in doctor_level:
-                return 'Doctoral degree'
+                return 'Doctor'
             elif compound_word_3 in master_level:
-                return 'Master\'s degree'
+                return 'Master\'s'
             elif compound_word_3 in bachelor_level:
-                return 'Bachelor\'s degree'
+                return 'Bachelor\'s'
             elif compound_word_3 in associate_level:
-                return 'Associate\'s degree'
+                return 'Associate\'s'
 
     for token in doc:
         next_token += 1
