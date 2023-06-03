@@ -16,10 +16,16 @@
         <header>
             {% include 'Resume_Collect/navbar.html' %}
         </header>
-        <space></space>
+        <nonespace></nonespace>
         <workbench style="justify-content: center !important;">
             <!--This is where the resume should be-->
             <h1>{{ candidate.id }}</h1>
+            <object data="{{ candidate.resume.url }}" type="application/pdf" width="700px" height="700px">
+                <embed src="{{ candidate.resume.url }}">
+                    <p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{ candidate.resume.url }}">Download PDF</a>.</p>
+                </embed>
+            </object>
+            
         </workbench>
     </body>
     <footer>

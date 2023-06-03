@@ -342,3 +342,20 @@ def AskDirectory():
 def remove_null_bytes(input_str):
     string = str(input_str)
     return string.replace('\x00', '')
+
+
+"""New function for reading pdf DOESNT WORK"""
+from django.core.files.storage import default_storage
+from pdfminer.high_level import extract_text
+
+def read_pdf(file):
+    # Save the uploaded file to disk
+    path = default_storage.save(file.name, file)
+
+    # Extract text from the PDF file
+    text = extract_text_from_pdf(path)
+
+    return text
+
+def extract_text_from_pdf(pdf_path):
+    return extract_text(pdf_path)

@@ -6,23 +6,32 @@
       {% csrf_token %}
       {% for field in openingform %}
       <div class="field-wrapper">
-          {{ field.errors }}
+          {{ field }}
+          {% if field.errors %}
+          <div id="alert" class="alert alert-danger">{{ field.errors.0 }}</div>
+        {% endif %}
+      </div>
+  {% endfor %}
+      <input class="btn btn-secondary" type="submit" value="Create Job Opening" style="width: max(13vh, 97px); font-weight:400; font-size: max(2vh, 12px);" name="opening">
+    </div>
+    </form>
+<div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+    <form action="" method="POST" enctype="multipart/form-data" id="CandidateForm">
+      {% csrf_token %}
+      {% for field in candidateform %}
+      <div class="field-wrapper">
           {{ field }}
       </div>
   {% endfor %}
-      <input class="btn btn-secondary" type="submit" value="Add Job Opening" style="width: max(13vh, 97px); font-weight:400; font-size: max(2vh, 12px);">
-    </form>
-      <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="file" id="file" accept=".pdf, .docx" multiple>
-        <input type="submit" value="Upload">
-    </form>
-
+      <input class="btn btn-secondary" type="submit" value="Add Candidate" style="width: max(13vh, 97px); font-weight:400; font-size: max(2vh, 12px);" name="candidate">
+  </form>
+  
+<!--
     <button type="button" class="btn btn-secondary">Button</button>
     <div class="search_btn">
         <form class="form-inline my-2 my-lg-0">
             <input id='search_input' class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button id="search_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-    </div>
+    </div> -->
   </div>

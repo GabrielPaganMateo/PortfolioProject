@@ -1,6 +1,6 @@
 
 header {
-    height: 22vh;
+    height: 20vh;
 }
 #logo {
     height: 10vh;
@@ -22,7 +22,7 @@ div.navbar {
     flex-wrap: nowrap;
     overflow-x: scroll;
     z-index: 5;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 10px 25px 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
@@ -47,6 +47,7 @@ a.navbar-brand {
     min-width: 105px;
     min-height: 50px;
     font-size: max(2vh, 21px);
+    
 }
 /* Another comment */
 
@@ -87,6 +88,7 @@ a.navbar-brand {
     margin-right: 50px;
     margin-left: 50px;
     font-size: max(3vh, 28px);
+    font-family: 'DM Sans', sans-serif;
 }
 
 

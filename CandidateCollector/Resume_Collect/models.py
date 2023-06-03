@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 import uuid
-from .utils import AskDirectory, AskOpenFilename,extract_name, extract_phone, extract_email, extract_education, extract_experience, list_text, extract_text_from_pdf, extract_text_from_docx, OpenFileDialog, OpenFolderDialog, SelectFileButton, SelectFolderButton, remove_null_bytes
+from .utils import *
 from tkinter import Tk, ttk
 
 # Create your models here.
@@ -12,7 +12,7 @@ class Opening(models.Model):
     name = models.CharField(max_length=200, null=True)
 
     def __str__(self):
-        return f'{self.name} {self.__class__.__name__}: ({self.id}) created_at: {self.created_at}'
+        return f'{self.name}'
     
     def create(self, name):
         return Opening.objects.create(name=name)
@@ -26,10 +26,10 @@ class Candidate(models.Model):
     education = models.TextField(null=True, blank=True)
     experience = models.TextField(null=True, blank=True)
     text_list = ArrayField(models.CharField(max_length=200), blank=True, null=True)
-    opening = models.ForeignKey(Opening, null=True, related_name='candidates', on_delete=models.CASCADE)
+    opening = models.ForeignKey(Opening, null=True, blank=True, related_name='candidates', on_delete=models.CASCADE)
     resume = models.FileField(upload_to='resumes/')
 
-
+    
 
     def __str__(self):
         return f'{self.__class__.__name__}: {self.name} ({self.id}) created_at: {self.created_at}'
@@ -39,6 +39,29 @@ def createOpening(name):
     opening = Opening.objects.create(name=name)
     opening.save()
     return opening
+
+def createCandidate(text, opening, file):
+    # Decode the bytes to a string
+    text = remove_null_bytes(text)
+    name = extract_name(text)
+    phone = extract_phone(text)
+    email = extract_email(text)
+    education = extract_education(text)
+    experience = extract_experience(text)
+    text_list = list_text(text)
+
+    candidate = Candidate.objects.create(
+        name=name,
+        phone=phone,
+        email=email,
+        education=education,
+        experience=experience,
+        text_list=text_list,
+        opening=opening,
+        resume=file
+    )
+    candidate.save()
+    return candidate
 
 def createCandidateFromFile(opening_object):
     files = AskOpenFilename()
@@ -101,7 +124,7 @@ def createCandidateFromFolder(opening_object):
 
 
 
-def createCandidate(opening_object):
+def createCandidateTkinter(opening_object):
     """Creating Master Window"""
     window = Tk()
     window.title("Candidate Collection")
@@ -150,7 +173,7 @@ def createCandidate(opening_object):
                 experience=experience,
                 text_list=text_list,
                 opening=opening_object
-                resume=
+                #resume=
             )
             candidate.save()
             candidate_list.append(candidate)
