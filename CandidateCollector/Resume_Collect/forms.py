@@ -31,33 +31,13 @@ class MultipleFileField(forms.FileField):
 
 
 class CandidateForm(forms.Form):
-    opening = forms.ModelChoiceField(queryset=Opening.objects.all(), empty_label="Select a Job Opening")
+    opening = forms.ModelChoiceField(queryset=Opening.objects.all(), empty_label="Select Job Opening")
     resumes = MultipleFileField()
 
-
-
-"""class CandidateForm(ModelForm):
-    opening = forms.ModelChoiceField(queryset=Opening.objects.all())
-    class Meta:
-        model = Candidate
-        fields = ['opening', 'resume']
-
-    def save(self, commit=True):
-        candidate = super(CandidateForm, self).save(commit=False)
-
-        # process request.FILES content here
-        file = self.cleaned_data.get('resume')
-        if file is not None:
-            text = read_pdf(file)
-            text = remove_null_bytes(text)
-            candidate.name = extract_name(text)
-            candidate.phone = extract_phone(text)
-            candidate.email = extract_email(text)
-            candidate.education = extract_education(text)
-            candidate.experience = extract_experience(text)
-            candidate.text_list = list_text(text)
-
-        if commit:
-            candidate.save()
-
-        return candidate"""
+class SearchForm(forms.Form):
+    query = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Filter By Keyword'}),
+        label=''
+    )
+    opening = forms.ModelChoiceField(queryset=Opening.objects.all(), empty_label="Select Job Opening", required=False)

@@ -8,7 +8,11 @@
       <div class="field-wrapper">
           {{ field }}
           {% if field.errors %}
-          <div id="alert" class="alert alert-danger">{{ field.errors.0 }}</div>
+          {% for error in field.errors %}
+            {% if error == 'Job Opening already exists.' %}
+            <div id="alert" class="alert alert-danger">{{ field.errors.0 }}</div>
+            {% endif %}
+            {% endfor %}
         {% endif %}
       </div>
   {% endfor %}
@@ -25,7 +29,7 @@
   {% endfor %}
       <input class="btn btn-secondary" type="submit" value="Add Candidate" style="width: max(13vh, 97px); font-weight:400; font-size: max(2vh, 12px);" name="candidate">
   </form>
-  
+  </div>
 <!--
     <button type="button" class="btn btn-secondary">Button</button>
     <div class="search_btn">
@@ -34,4 +38,14 @@
             <button id="search_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div> -->
-  </div>
+    <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+    <form action="" method="POST" id="SearchForm">
+        {% csrf_token %}
+        {% for field in searchform %}
+        <div class="field-wrapper">
+            {{ field }}
+        </div>
+    {% endfor %}
+        <input class="btn btn-secondary" type="submit" value="Search" style="width: max(13vh, 97px); font-weight:400; font-size: max(2vh, 12px);" name="search">
+    </form>
+    </div>

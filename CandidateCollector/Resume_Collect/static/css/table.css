@@ -38,3 +38,7 @@ main {
     text-align: center;
     vertical-align: middle;
 }
+
+#email {
+    max-width: 40vh;
+}

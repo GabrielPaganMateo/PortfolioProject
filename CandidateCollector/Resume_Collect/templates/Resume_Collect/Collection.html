@@ -17,11 +17,7 @@
         <header>
             {% include 'Resume_Collect/navbar.html' %}
         </header>
-        {% if opening_name %}
-        <space><div>{{ opening_name }}</div></space>
-        {% else %}
-        <noneSpace></noneSpace>
-        {% endif %}
+        {% include 'Resume_Collect/space.html' %}
         <workbench>
             <side>
                 {% include 'Resume_Collect/buttonGroup.html' %}

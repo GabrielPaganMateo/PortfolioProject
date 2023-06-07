@@ -131,18 +131,28 @@ side {
     margin-top: 20px;
 }
 
+#SearchForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: max(2vh, 15px);
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
 #id_resumes {
     font-size: max(2vh, 12px);
-    width: max(13vh, 210px);
+    width: max(28vh, 260px);
+    color:#fff;
 }
 
 #id_name {
-    width: max(13vh, 210px);
+    width: max(28vh, 210px);
     font-size: max(2vh, 12px);
 }
 
 #id_opening {
-    width: max(13vh, 210px);
+    width: max(28vh, 210px);
     font-size: max(2vh, 12px);
 }
 
@@ -153,4 +163,9 @@ select {
 #alert {
     padding: 0 0.25rem;
     margin-bottom: 0;
+}
+
+#id_query {
+    width: max(28vh, 210px);
+    font-size: max(2vh, 12px); 
 }

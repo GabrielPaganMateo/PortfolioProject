@@ -7,15 +7,16 @@ workbench {
 
 side {
     position: fixed;
-    left: 6%;
+    left: 8%;
     z-index: 2;
 }
 
 main {
     position: relative;
-    right: 10%;
+    right: 8%;
     z-index: 0;
 
     margin-left: 15vh;
     min-width: 300px;
+    max-width: 65%;
 }
