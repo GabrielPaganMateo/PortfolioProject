@@ -10,7 +10,7 @@ class Opening(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(default=timezone.localtime)
     name = models.CharField(max_length=200, null=True)
-    description = models.TextField(null=True)
+
 
     def __str__(self):
         return f'{self.name}'

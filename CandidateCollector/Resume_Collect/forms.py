@@ -2,6 +2,8 @@ from django.forms import ModelForm
 from django import forms
 from .models import Opening, Candidate
 from .utils import *
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class OpeningForm(ModelForm):
     class Meta:
@@ -41,3 +43,15 @@ class SearchForm(forms.Form):
         label=''
     )
     opening = forms.ModelChoiceField(queryset=Opening.objects.all(), empty_label="Select Job Opening", required=False)
+
+class RegisterUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterUserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['placeholder'] = 'Enter Username'
+        self.fields['email'].widget.attrs['placeholder'] = 'Enter Email'
+        self.fields['password1'].widget.attrs['placeholder'] = 'Enter Password'
+        self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'

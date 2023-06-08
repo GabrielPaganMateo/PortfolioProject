@@ -1,14 +1,50 @@
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from .utils import *
 
-def LogIn(request):
-    return render(request, 'Resume_Collect/LogIn.html')
+def Register(request):
+    if request.user.is_authenticated:
+        return redirect('Collection')
+    else:
+        form = RegisterUserForm()
+        if request.method == 'POST':
+            form = RegisterUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('Collection')
 
+        context = {'form': form}
+        return render(request, 'Resume_Collect/Register.html', context)
+
+def Access(request):
+    if request.user.is_authenticated:
+        return redirect('Collection')
+    else:
+        form = AuthenticationForm()
+        if request.method == 'POST':
+            form = AuthenticationForm(request, request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('Collection')
+                else:
+                    messages.error(request, 'Incorrect username or password')
+
+    context = {'form': form}
+    return render(request, 'Resume_Collect/Access.html', context)
+
+@login_required(login_url='Access')
 def Collection(request):
     if 'opening' not in request.POST:
         openingform = OpeningForm(request.POST or None)
@@ -83,13 +119,10 @@ def Collection(request):
                 request.session['opening_id'] = None
                 request.session['opening_name'] = None
 
-    """NEW IDEA: ADD A FORM FOR JOB DESCRIPTION IN OPENING MODEL, RECRUITERS WILL COPY PASTE THEIR JOB DESCRIPTION TO IT,
-    THEN WHEN CANDIDATES ARE ADDED THE CANDIDATE THAT MATCHES THE JOB DESCRIPTION MOST WILL BE ORDERED FROM HIGHEST TO LOWEST
-    BASED ON A SCORE THAT IS CREATED BY COMPARING ALL THE WORDS CONTAINED IN THE DESCRIPTION WITH tHE TEXT LIST OF THE CANDIATE... But HOW ???
-    NOT ANOTHER FOR LOOP PLEASE D:"""
-
     opening_id = request.session.get('opening_id')
     opening_name = request.session.get('opening_name')
+    candidateform = CandidateForm(initial={'opening': opening_id} if opening_id else None, files=None)
+    searchform = SearchForm(initial={'opening': opening_id} if opening_id else None)
 
     if opening_id:
         candidates = Candidate.objects.filter(opening__id=opening_id)
@@ -105,6 +138,7 @@ def Collection(request):
             candidates = candidates.filter(text_list__icontains=keyword)
 
     opening = Opening.objects.filter(id=opening_id)
+
     total_candidates = candidates.count()
     print(opening)
     context = {
@@ -115,6 +149,7 @@ def Collection(request):
         'candidateform': candidateform,
         'opening_name': opening_name,
         'searchform': searchform,
+        'query': query
     }
 
     return render(request, 'Resume_Collect/Collection.html', context)
@@ -122,3 +157,13 @@ def Collection(request):
 def Resume(request, pk):
     candidate = Candidate.objects.get(id=pk)
     return render(request, 'Resume_Collect/Resume.html', {'candidate':candidate})
+
+def Exit(request):
+    logout(request)
+    return redirect('Access')
+
+
+"""NEW IDEA: ADD A FORM FOR JOB DESCRIPTION IN OPENING MODEL, RECRUITERS WILL COPY PASTE THEIR JOB DESCRIPTION TO IT,
+THEN WHEN CANDIDATES ARE ADDED THE CANDIDATE THAT MATCHES THE JOB DESCRIPTION MOST WILL BE ORDERED FROM HIGHEST TO LOWEST
+BASED ON A SCORE THAT IS CREATED BY COMPARING ALL THE WORDS CONTAINED IN THE DESCRIPTION WITH tHE TEXT LIST OF THE CANDIATE... But HOW ???
+NOT ANOTHER FOR LOOP PLEASE D:"""
