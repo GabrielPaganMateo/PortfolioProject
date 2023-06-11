@@ -33,16 +33,27 @@ class MultipleFileField(forms.FileField):
 
 
 class CandidateForm(forms.Form):
-    opening = forms.ModelChoiceField(queryset=Opening.objects.all(), empty_label="Select Job Opening")
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['opening'] = forms.ModelChoiceField(
+            queryset=Opening.objects.filter(user=user), 
+            empty_label="Select Job Opening"
+        )
     resumes = MultipleFileField()
 
 class SearchForm(forms.Form):
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['opening'] = forms.ModelChoiceField(
+            queryset=Opening.objects.filter(user=user),
+            empty_label="Select Job Opening",
+            required=False
+        )
     query = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={'placeholder': 'Filter By Keyword'}),
         label=''
     )
-    opening = forms.ModelChoiceField(queryset=Opening.objects.all(), empty_label="Select Job Opening", required=False)
 
 class RegisterUserForm(UserCreationForm):
     class Meta:

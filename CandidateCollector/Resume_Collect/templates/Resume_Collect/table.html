@@ -1,9 +1,6 @@
 {% load static %}
 {% if candidates %}
 <div class="card">
-    {% if query %}
-        Candidates filtered by: "{{ query }}"
-    {% endif %}
     <div id="folder" class="table">
         <table id='table' class="table table-hover">
             <thead>
@@ -47,7 +44,7 @@
                     {% else %}
                         <td style="text-decoration: line-through;">&nbsp;</td>
                     {% endif %}-->
-                        <td><a class="btn btn-sm btn-info" href="{% url 'Resume' candidate.id %}" style="background-color: #38b6ff !important;"><img id='download' style="width: max(3vh, 12px);" src="{% static 'images/download.svg' %}"></a></td>
+                        <td><a class="btn btn-sm btn-info" href="{{ candidate.resume.url }}" style="background-color: #38b6ff !important;"><img id='download' style="width: max(3vh, 12px);" src="{% static 'images/download.svg' %}"></a></td>
                         <td>
                             <form method="POST" action="">
                                 {% csrf_token %}
@@ -63,8 +60,4 @@
         </table>
     </div>
   </div>
-  {% else %}
-    <div class="card" style="white-space: nowrap;">
-        Candidates filtered by: "{{ query }}"
-    </div>
   {% endif %}
