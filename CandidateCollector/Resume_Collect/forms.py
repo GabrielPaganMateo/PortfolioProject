@@ -42,11 +42,21 @@ class CandidateForm(forms.Form):
     resumes = MultipleFileField()
 
 class SearchForm(forms.Form):
+    EDUCATION_CHOICES = [
+    ('', 'All education levels'),
+    ('None', 'None'),
+    ('Certificate', 'Certificate'),
+    ('Associate\'s', 'Associate\'s'),
+    ('Bachelor\'s', 'Bachelor\'s'),
+    ('Master\'s', 'Master\'s'),
+    ('Doctor', 'Doctor'),
+    ]
+
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['opening'] = forms.ModelChoiceField(
             queryset=Opening.objects.filter(user=user),
-            empty_label="Select Job Opening",
+            empty_label="All Candidates",
             required=False
         )
     query = forms.CharField(
@@ -54,6 +64,7 @@ class SearchForm(forms.Form):
         widget=forms.TextInput(attrs={'placeholder': 'Filter By Keyword'}),
         label=''
     )
+    education = forms.ChoiceField(choices=EDUCATION_CHOICES, required=False)
 
 class RegisterUserForm(UserCreationForm):
     class Meta:

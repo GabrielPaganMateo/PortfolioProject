@@ -177,3 +177,8 @@ select {
     border-top-left-radius: .3rem;
     border-top-right-radius: .3rem;
 }
+
+#id_education {
+    width: max(28vh, 210px);
+    font-size: max(2vh, 12px);
+}

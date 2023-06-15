@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Resume_Collect'
+    'Resume_Collect',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -75,16 +76,29 @@ WSGI_APPLICATION = 'CandidateCollector.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+            'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'resumevault',
+        'USER': 'holberton',
+        'PASSWORD': 'password',
+        'HOST': 'database-1.ckr9gkvmq8f1.us-east-2.rds.amazonaws.com',
+        'PORT': '5432',
+        }
+    }
+
+
+
+""" local psql database{
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'collection',
         'USER': 'Gabriel',
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}
-
+}"""
+"""AWS DB Master username: holberton, password: password, Databasename: resumevault"""
 
 """ Old Database
     'default': {
@@ -142,3 +156,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#S3 Buckets Config
+
+AWS_ACCESS_KEY_ID = 'AKIAT2VGU64LIW3KCNXV'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'resumevault-gabrielpaganmateo-bucket'
+
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+"""Uncomment for static file storage in S3, (Remember to add every static directory to S3, css and images, then erase them from app)"""
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'

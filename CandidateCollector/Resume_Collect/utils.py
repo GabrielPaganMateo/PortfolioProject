@@ -348,13 +348,22 @@ def remove_null_bytes(input_str):
 from django.core.files.storage import default_storage
 from pdfminer.high_level import extract_text
 
-def read_pdf(file):
+"""def read_pdf(file):
     # Save the uploaded file to disk
     path = default_storage.save(file.name, file)
 
     # Extract text from the PDF file
     text = extract_text_from_pdf(path)
 
+    return text"""
+from pdfminer.high_level import extract_text
+from io import BytesIO
+
+def read_pdf(file_object):
+    # Create a BytesIO object from the InMemoryUploadedFile
+    pdf_data = BytesIO(file_object.read())
+    # Use the BytesIO object with extract_text() function
+    text = extract_text(pdf_data)
     return text
 
 def extract_text_from_pdf(pdf_path):

@@ -51,6 +51,7 @@ def Collection(request):
     if 'search' not in request.POST:
         searchform = SearchForm(request.POST or None, user=active_user)
     query = None
+    education = None
     if request.method == 'POST':
         if 'opening' in request.POST:
             openingform = OpeningForm(request.POST)
@@ -98,25 +99,34 @@ def Collection(request):
             searchform = SearchForm(request.POST, user=active_user)
             if searchform.is_valid():
                 query = searchform.cleaned_data.get('query')
+                request.session['query'] = query
                 opening = searchform.cleaned_data.get('opening')
+                education = searchform.cleaned_data.get('education')
+                request.session['education'] = education
                 if opening:
                     request.session['opening_id'] = str(opening.id)
                     request.session['opening_name'] = str(opening.name)
                     candidateform = CandidateForm(initial={'opening': opening.id}, user=active_user, files=None)
-                    searchform = SearchForm(initial={'opening': opening.id, 'query': query}, user=active_user)
+                    searchform = SearchForm(initial={'opening': opening.id, 'query': query, 'education': education}, user=active_user)
                 else:
                     request.session['opening_id'] = None
                     request.session['opening_name'] = 'All Candidates'
-                    searchform = SearchForm(initial={'query': query}, user=active_user)
+                    searchform = SearchForm(initial={'query': query, 'education': education}, user=active_user)
+
 
         if 'delete_candidate' in request.POST:
             candidate_id = request.POST.get('delete_candidate')
             candidate = get_object_or_404(Candidate, id=candidate_id)
             request.session['opening_id'] = str(candidate.opening.id)
             request.session['opening_name'] = str(candidate.opening.name)
-            candidateform = CandidateForm(initial={'opening': candidate.opening.id}, user=active_user, files=None)
-            searchform = SearchForm(initial={'opening': candidate.opening.id}, user=active_user)
+            candidate.resume.delete()
             candidate.delete()
+            query = request.session.get('query', '')
+            education = request.session.get('education', '')
+            candidateform = CandidateForm(initial={'opening': candidate.opening.id}, user=active_user, files=None)
+            searchform = SearchForm(initial={'opening': candidate.opening.id, 'query': query, 'education': education}, user=active_user)
+            print(query)
+
 
         if 'delete_opening' in request.POST:
             opening_id = request.session.get('opening_id')
@@ -128,7 +138,6 @@ def Collection(request):
 
     opening_id = request.session.get('opening_id')
     opening_name = request.session.get('opening_name')
-
 
 
     if opening_id:
@@ -144,10 +153,15 @@ def Collection(request):
         print(query)
         for keyword in keywords:
             candidates = candidates.filter(text_list__icontains=keyword)
+        request.session['query_str'] = query
     else:
         query = None
 
+    if education:
+        candidates = candidates.filter(education__icontains=education)
+
     opening = Opening.objects.filter(id=opening_id)
+    candidates = candidates.order_by('name')
 
     if request.method == 'GET':
         candidateform = CandidateForm(initial={'opening': opening_id}, user=active_user, files=None)
