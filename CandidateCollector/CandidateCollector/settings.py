@@ -159,9 +159,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #S3 Buckets Config
 
-AWS_ACCESS_KEY_ID = 'AKIAT2VGU64LIW3KCNXV'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'resumevault-gabrielpaganmateo-bucket'
+
 
 AWS_S3_REGION_NAME = 'us-east-2'
 AWS_S3_FILE_OVERWRITE = False
