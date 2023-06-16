@@ -117,14 +117,14 @@ def Collection(request):
         if 'delete_candidate' in request.POST:
             candidate_id = request.POST.get('delete_candidate')
             candidate = get_object_or_404(Candidate, id=candidate_id)
-            request.session['opening_id'] = str(candidate.opening.id)
+            current_opening_id = request.session['opening_id']
             request.session['opening_name'] = str(candidate.opening.name)
             candidate.resume.delete()
             candidate.delete()
             query = request.session.get('query', '')
             education = request.session.get('education', '')
-            candidateform = CandidateForm(initial={'opening': candidate.opening.id}, user=active_user, files=None)
-            searchform = SearchForm(initial={'opening': candidate.opening.id, 'query': query, 'education': education}, user=active_user)
+            candidateform = CandidateForm(initial={'opening': current_opening_id}, user=active_user, files=None)
+            searchform = SearchForm(initial={'opening': current_opening_id, 'query': query, 'education': education}, user=active_user)
             print(query)
 
 
@@ -190,9 +190,3 @@ def Resume(request, pk):
 def Exit(request):
     logout(request)
     return redirect('Access')
-
-
-"""NEW IDEA: ADD A FORM FOR JOB DESCRIPTION IN OPENING MODEL, RECRUITERS WILL COPY PASTE THEIR JOB DESCRIPTION TO IT,
-THEN WHEN CANDIDATES ARE ADDED THE CANDIDATE THAT MATCHES THE JOB DESCRIPTION MOST WILL BE ORDERED FROM HIGHEST TO LOWEST
-BASED ON A SCORE THAT IS CREATED BY COMPARING ALL THE WORDS CONTAINED IN THE DESCRIPTION WITH tHE TEXT LIST OF THE CANDIATE... But HOW ???
-NOT ANOTHER FOR LOOP PLEASE D:"""
