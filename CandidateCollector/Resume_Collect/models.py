@@ -31,7 +31,7 @@ class Candidate(models.Model):
     text_list = ArrayField(models.CharField(max_length=200), blank=True, null=True)
     opening = models.ForeignKey(Opening, null=True, blank=True, related_name='candidates', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    resume = models.FileField(upload_to='Resume_Collect/static/resumes/')
+    resume = models.FileField(upload_to='resumes/')
 
     
 
