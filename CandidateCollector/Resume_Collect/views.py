@@ -182,11 +182,6 @@ def Collection(request):
 
     return render(request, 'Resume_Collect/Collection.html', context)
 
-
-def Resume(request, pk):
-    candidate = Candidate.objects.get(id=pk)
-    return render(request, 'Resume_Collect/Resume.html', {'candidate':candidate})
-
 def Exit(request):
     logout(request)
     return redirect('Access')
