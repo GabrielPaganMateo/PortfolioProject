@@ -1,6 +1,4 @@
 from django.shortcuts import render, redirect
-
-# Create your views here.
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404
@@ -117,7 +115,10 @@ def Collection(request):
         if 'delete_candidate' in request.POST:
             candidate_id = request.POST.get('delete_candidate')
             candidate = get_object_or_404(Candidate, id=candidate_id)
-            current_opening_id = request.session['opening_id']
+            try:
+                current_opening_id = request.session['opening_id']
+            except KeyError as error:
+                current_opening_id = None
             request.session['opening_name'] = str(candidate.opening.name)
             candidate.resume.delete()
             candidate.delete()
